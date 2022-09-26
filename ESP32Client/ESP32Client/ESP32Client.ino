@@ -172,7 +172,6 @@ int sendDataPOST(const char * body, const char * url){
     http.begin(host.c_str());
     http.addHeader("Content-Type", "application/json");
       
-      // Send HTTP GET request
     int httpCode = http.POST(body);
       
     if (httpCode>0) {
