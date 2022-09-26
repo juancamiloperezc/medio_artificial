@@ -80,7 +80,7 @@ class ControllerMeditions{
                   return;
                }
 
-               res.status(200).json({isOk: true});
+               res.status(200).json({isOk: true}); 
             });
          });
 
@@ -120,7 +120,7 @@ class ControllerMeditions{
              console.log("el colino no existe");
              res.status(404).json({exist: false, data: null});
              return;
-             
+
           }
           
           let date = new Date();
