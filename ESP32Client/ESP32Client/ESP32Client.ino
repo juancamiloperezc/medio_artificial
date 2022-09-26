@@ -1,3 +1,4 @@
+#include <WiFiClient.h>
 #include <WiFiManager.h>
 
 // macros
@@ -8,6 +9,8 @@ void connectWiFi();
 
 // variables
 const char *ssidCaptive = "medio_artificial_esp32"; // se define nombre del SSID del portal cautivo
+const char *localHost = "127.0.0.1"; 
+const char *port = "3001"; 
 
 //objetos
 WiFiManager wifiManager;
@@ -44,6 +47,11 @@ void connectWiFi(){
       Serial.print("ip -> " );
       Serial.println(WiFi.localIP());
       Serial.println("\n");
+    #endif
+  }else{ // si se conecta a la red
+    // se envían los datos de prueba al servidor 
+    #ifdef SERIAL_DEBUG
+     Serial.println("\nconsultando id del colino actual");
     #endif
   }
 }
