@@ -62,7 +62,7 @@ void connectWiFi(){
     http.addHeader("Content-Type", "application/json");
       
       // Send HTTP GET request
-    int httpCode = http.POST("{ \"position\" : 1, \"medicion\": 320}");
+    int httpCode = http.POST("{ \"position\" : 1, \"medition\": 320}");
       
     if (httpCode>0) {
        #ifdef SERIAL_DEBUG 
