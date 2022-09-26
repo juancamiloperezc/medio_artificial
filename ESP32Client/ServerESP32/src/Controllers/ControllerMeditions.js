@@ -129,7 +129,7 @@ class ControllerMeditions{
 
           // en caso de que exista el colino se envían los datos
           let payload = [
-             [id, currentDate,currentTime, req.body.medicion]
+             [id, currentDate,currentTime, req.body.medition]
           ];
 
           // se envía el query para guardar los datos
