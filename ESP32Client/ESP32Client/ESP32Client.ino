@@ -57,11 +57,9 @@ void connectWiFi(){
 
     String host = String(localHost) + "/saveHum";
       
-    // Your Domain name with URL path or IP address with path
     http.begin(host.c_str());
     http.addHeader("Content-Type", "application/json");
       
-      // Send HTTP GET request
     int httpCode = http.POST("{ \"position\" : 1, \"medition\": 320}");
       
     if (httpCode>0) {
@@ -78,7 +76,7 @@ void connectWiFi(){
          Serial.println(httpCode);
         #endif 
       }
-      // Free resources
+
       http.end();
 
       delay(2000);
