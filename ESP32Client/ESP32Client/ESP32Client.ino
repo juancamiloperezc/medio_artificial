@@ -172,12 +172,8 @@ int sendDataPOST(const char * body, const char * url){
     http.begin(host.c_str());
     http.addHeader("Content-Type", "application/json");
       
-<<<<<<< HEAD
-    int httpCode = http.POST("{ \"position\" : 1, \"medition\": 320}");
-=======
       // Send HTTP GET request
     int httpCode = http.POST(body);
->>>>>>> servidor_esp32_2
       
     if (httpCode>0) {
        #ifdef SERIAL_DEBUG 
