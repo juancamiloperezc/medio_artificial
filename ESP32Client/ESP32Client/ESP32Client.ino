@@ -1,4 +1,4 @@
-#include <WiFiClient.h>
+#include <HTTPClient.h>
 #include <WiFiManager.h>
 
 // macros
@@ -9,8 +9,7 @@ void connectWiFi();
 
 // variables
 const char *ssidCaptive = "medio_artificial_esp32"; // se define nombre del SSID del portal cautivo
-const char *localHost = "127.0.0.1"; 
-const char *port = "3001"; 
+const char *localHost = "http://192.168.20.24:3001"; 
 
 //objetos
 WiFiManager wifiManager;
@@ -32,7 +31,7 @@ void loop() {
 
 // se conecta el wifi o se activa el portal cautivo en caso de desconexión
 void connectWiFi(){
-  if (!WiFi.status() == WL_CONNECTED) { // se verifica conexión a la red
+  if (! (WiFi.status() == WL_CONNECTED)) { // se verifica conexión a la red
 
     #ifdef SERIAL_DEBUG
      Serial.println("no conectado");
@@ -51,8 +50,38 @@ void connectWiFi(){
   }else{ // si se conecta a la red
     // se envían los datos de prueba al servidor 
     #ifdef SERIAL_DEBUG
-     Serial.println("\nconsultando id del colino actual");
+     Serial.print("\nEnviando peticion POST A -> ");
+     Serial.println(localHost);
     #endif
+    HTTPClient http;
+
+    String host = String(localHost) + "/saveHum";
+      
+    // Your Domain name with URL path or IP address with path
+    http.begin(host.c_str());
+    http.addHeader("Content-Type", "application/json");
+      
+      // Send HTTP GET request
+    int httpCode = http.POST("{ \"position\" : 1, \"medicion\": 320}");
+      
+    if (httpCode>0) {
+       #ifdef SERIAL_DEBUG 
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpCode);
+        String payload = http.getString();
+        Serial.println(payload);
+       #endif  
+      }
+      else {
+        #ifdef SERIAL_DEBUG 
+         Serial.print("Error code: ");
+         Serial.println(httpCode);
+        #endif 
+      }
+      // Free resources
+      http.end();
+
+      delay(2000);
   }
 }
 
