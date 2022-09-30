@@ -1,5 +1,26 @@
-<template>
-  <div class="about">
-    <h1>This is an about page</h1>
+<template> 
+  <div>
+    <!--  banner de la sección del login --> 
+    <banner-login-vue :selected="3"></banner-login-vue>
   </div>
-</template>
+ </template> 
+ 
+ <script> 
+  import BannerLoginVue from '@/components/BannerLogin.vue'
+
+  export default{
+    name:'about',
+    components: {BannerLoginVue},
+    data: () => {
+      return{
+ 
+      };
+    },
+ 
+    methods: {
+ 
+    },
+ 
+  };
+ 
+ </script>
