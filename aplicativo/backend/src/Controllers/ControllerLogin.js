@@ -21,7 +21,6 @@ class ControllerLogin{
        console.log(data.length);
        // se revisa si el usuario existe con anterioridad
        if (data.length != 0){
-           console.log("el usuario ya existe con anterioridad");
            res.status(202).json({exist: true, register: false});
            return;
        }
