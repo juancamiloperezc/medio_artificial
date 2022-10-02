@@ -18,7 +18,7 @@ class ControllerLogin{
           res.status(500).json({exist: false, register: false});
           return;
        }
-       console.log(data.length);
+
        // se revisa si el usuario existe con anterioridad
        if (data.length != 0){
            res.status(202).json({exist: true, register: false});
@@ -80,7 +80,6 @@ class ControllerLogin{
           };
 
           console.log("credenciales correctas ");
-          console.log(process.env.JWT_SECRET);
 
           // se añade la sesión del token
           jwt.sign({payload}, process.env.JWT_SECRET , {expiresIn: '3h'}, (err, token) => {
@@ -90,16 +89,45 @@ class ControllerLogin{
                 return;
               }
 
-              res.status(200).json({login: true, token: token})  
+              res.status(200).json({exist:true,  login: true, token: token})  
           });
        }else { // en caso de credenciales incorrectas
           console.log("credenciales incorrectas");
-          res.status(401).json({login: false});
+          res.status(401).json({exist:true, login: false});
           return;
        }
 
     });
   }
+
+  isAuth(req, res){ // método para verificar el inicio de sesión previo de un usuario
+   // se recupera el token para la autenticación
+      let token = req.headers["authorization"];
+      
+      // se verifica la autenticidad el token
+      if (token == null){
+         res.status(401).json({auth: false, data: null});
+         console.log("token no identificado");
+         return;
+      }else{
+         //se envían datos de validación al cliente
+         jwt.verify(token, process.env.JWT_SECRET, (err, dataUser) =>{
+            if (err){
+               res.status(500).json({auth: false, data: null});
+               console.log("error de auth : "+ err);
+               return;
+            }
+
+            // si los email no coinciden
+            if (dataUser.payload.email != req.body.email){
+               res.status(401).json({auth: false, data: null});
+               return;
+            }
+
+             res.status(200).json({auth: true, data: {...dataUser.payload}});
+         });
+      }
+   }
 }
 
 module.exports = ControllerLogin;

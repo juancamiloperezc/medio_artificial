@@ -14,6 +14,7 @@ class RouterLogin{
     
     this.router.post('/register', this.controller.register);
     this.router.post('/login', this.controller.login);
+    this.router.post('/login/valid', this.controller.isAuth);
   }
 }
 
