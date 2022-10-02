@@ -31,7 +31,7 @@
                 lazy-validation             
                 >
                 
-                <v-text-field
+                <v-text-field autocomplete="on"
                   prepend-icon="mdi-account"
                   v-model="names"
                   type="text"
@@ -45,7 +45,7 @@
                   >
                 </v-text-field>
                 
-                <v-text-field
+                <v-text-field autocomplete="on"
                   prepend-icon="mdi-account"
                   v-model="lastNames"
                   type="text"
@@ -59,7 +59,7 @@
                   >
                 </v-text-field>
 
-                <v-text-field
+                <v-text-field autocomplete="on"
                   prepend-icon="mdi-email"
                   v-model="email"
                   type="email"
@@ -73,7 +73,7 @@
                 >
                 </v-text-field>
 
-                <v-text-field
+                <v-text-field autocomplete="on"
                   prepend-icon="mdi-lock"
                   v-model="password"
                   label="Contraseña"
@@ -202,12 +202,12 @@
   }
 
   #background-btn-register{
-    background: rgb(81,255,81);
+    background:rgba(66,194,60,1)
   }
 
   #background-btn-register:hover{
     color: white;
-    background: rgba(12, 238, 12, 0.5);
+    background: linear-gradient(267deg, rgba(81,255,81,0.9962359943977591) 8%, rgba(66,194,60,1) 22%);
     transition: 0.5s ease-in-out;
   }
 

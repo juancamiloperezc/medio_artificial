@@ -3,6 +3,51 @@
     <!--  banner de la sección del login --> 
     <banner-login-vue :selected="2"></banner-login-vue>
 
+    <!-- sección del dialogo para enviar código -->
+    <!--<v-dialog
+      v-model="dialog"
+      persistent
+      max-width="600px"
+    >
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Verificación</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <p> 
+              Se enviará un código de verificación
+              a tu correo. 
+            </p>
+
+            <v-text-field
+              label="Ingresa código de verificación"
+              type="number"
+              v-model="codeVer"
+              required
+            ></v-text-field>
+          </v-container>  
+        </v-card-text>      
+        <v-card-actions>    
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            CANCELAR
+          </v-btn>
+          
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog = false"
+          >
+            ACEPTAR
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog> -->
+
     <!--seccion de la alerta -->
     <v-alert
         transition="scale-transition"
@@ -50,10 +95,13 @@
       return {
         isShowAlert: false, 
         colorAlert: "success",
+        dialog: false, 
+        codeVer: null,
       };
     },
 
     methods: {
+       
        // método para registrar un usuario nuevo
        async register(data){
         try{  

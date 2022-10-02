@@ -8,7 +8,7 @@
     > 
       
      <!-- sección del logo del proyecto -->
-      <v-card-title id="background-title" class="display-1 ml-5">  
+      <v-card-title id="background-title" :class= "[!isMobile ? 'display-1': 'title','ml-5']">  
         MEDIO ARTIFICIAL APP
       </v-card-title>    
 

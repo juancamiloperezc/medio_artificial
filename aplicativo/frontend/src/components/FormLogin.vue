@@ -17,6 +17,7 @@
         <v-container>
           <v-form ref = "form" lazy-validation>
            <v-text-field
+              autocomplete="on"
               prepend-icon="mdi-email"
               v-model = "email"
               type="email"
@@ -30,6 +31,7 @@
            </v-text-field>
 
            <v-text-field
+             autocomplete="on"
              prepend-icon="mdi-lock"
              v-model = "password"
              label = "Contraseña"
@@ -50,6 +52,7 @@
               id="background-btn-login"
               block
               v-on:keyup.enter ="validateForm"
+              @click="validateForm"
             >
                 INICIAR SESIÓN
             </v-btn>
@@ -65,7 +68,9 @@
 <script>
   export default{
     name: 'FormLogin', 
-    components: {},
+    components: {
+      
+    },
 
     data: () => {
        return{
@@ -91,15 +96,15 @@
     methods: {
       // método para  validar el formulario
         validateForm(){
-
-           if(this.$refs.form.validate()){ 
+          
+          if(this.$refs.form.validate()){ 
             // si los datos ingresados son validos 
             let dataUser ={
                  email: this.email, 
                  password: this.password,
               };
 
-              this.$emit("register", dataUser);
+              this.$emit("loginUser", dataUser);
            }
         },
 
@@ -126,13 +131,13 @@
   }
 
   #background-btn-login{
-    background: rgb(81,255,81);
+    background:rgba(66,194,60,1);
     color:white;
   }
 
   #background-btn-login:hover{
     color: white;
-    background: rgba(12, 238, 12, 0.5);
+    background: linear-gradient(267deg, rgba(81,255,81,0.9962359943977591) 8%, rgba(66,194,60,1) 22%);
     transition: 0.5s ease-in-out;
   }
 
