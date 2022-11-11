@@ -4,7 +4,7 @@
     <banner-login-vue :selected="2"></banner-login-vue>
 
     <!-- sección del dialogo para enviar código -->
-    <!--<v-dialog
+    <v-dialog
       v-model="dialog"
       persistent
       max-width="600px"
@@ -46,7 +46,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog> 
 
     <!--seccion de la alerta -->
     <v-alert
