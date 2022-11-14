@@ -1,6 +1,64 @@
 <template>
   <div>
+   <!-- seccion de alerta de recuperación de contraseña -->
+   <v-alert
+        transition="scale-transition"
+        icon="mdi-alert-circle"
+        dismissible
+        :value= "isShowAlert"
+        color="success"
+        @click = "() => isShowAlert = false"
+      > 
+      Se enviará el email solicitado si el correo es valido
+    </v-alert>
+
    <v-container>
+    <!-- sección del formulario de recuperación de contraseña-->
+    <v-container>
+      <v-dialog
+        v-model = "dialog"
+        persistent
+        max-width="600px"
+      >
+        <v-card>
+          <v-card-title id = "background-forgot-password-head">
+            <span> Recuperar Contraseña</span>
+          </v-card-title>
+          <v-card-text id = "background-forgot-password-body">
+            <v-container>
+              <v-text-field
+                autocomplete="on"
+                prepend-icon="mdi-email"
+                v-model = "email_recovery"
+                type="email"
+                label = "Correo Electrónico"
+                outlined
+                required
+                
+              >
+              </v-text-field>
+              <v-spacer></v-spacer>
+                <v-btn
+                    color="green"
+                    text
+                    @click="dialog = false"
+                  >
+                    Cancelar
+                  </v-btn>
+                  <v-btn
+                    color="green"
+                    text
+                    @click="forgotPassword"
+                  >
+                  Enviar Email
+                </v-btn>
+           </v-container>  
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-container>  
+
+    <!-- sección principal -->
     <v-container fluid fill-height align-center justify-center> 
       <v-card elevation = "24" outline shapped round id="background-form">
         
@@ -47,6 +105,12 @@
             >
            </v-text-field>
 
+           <!-- sección para recuperación de contraseña -->
+           <v-btn text id = "background-btn-forgot" class = "text-sm-body-2"
+              @click = "() => dialog = true">
+             Recuperar contraseña
+           </v-btn>
+
            <v-container>
             <v-btn 
               id="background-btn-login"
@@ -66,6 +130,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default{
     name: 'FormLogin', 
     components: {
@@ -77,6 +143,9 @@
           email: '',
           password: '', 
           isShowPass: false,
+          dialog: false,
+          isShowAlert: false,
+          email_recovery : '',
           
           emailRules: [
              v => !!v || 'El Correo Electrónico es obligatorio',
@@ -111,7 +180,27 @@
         // método para devolver el valor de la contraseña
         resetForm(){
           this.password = "";
-        }
+        },
+
+        // método para recuperar la contraseña
+        async forgotPassword(){
+            this.isShowAlert = true;
+            this.dialog = false;
+            let email = this.email_recovery;
+
+             // se realiza la petición para el envío del email
+             let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/forgotPassword`; 
+             let urlrecovery = `${process.env.VUE_APP_URL}:${process.env.VUE_APP_PORT}/forgotPassword`; 
+            
+             try{
+                 let data = {email: email};
+                 let config = {headers:{'url': urlrecovery}}
+                 let res = await axios.post(url, data, config); 
+                
+             }catch (err){
+                  return;
+             }
+        },
     }
   };
 </script>
@@ -139,6 +228,26 @@
     color: white;
     background: linear-gradient(267deg, rgba(81,255,81,0.9962359943977591) 8%, rgba(66,194,60,1) 22%);
     transition: 0.5s ease-in-out;
+  }
+
+  #background-btn-forgot{
+    background: #cbffcb;
+    color: #5e6fff;
+    font: bold 90% monospace;
+    text-decoration: underline; 
+  }
+ 
+  #background-forgot-password-head{
+    color: white;
+    text-shadow: 2px 2px 0px #000000, 5px 4px 0px rgba(0,0,0,0.15);
+    font: bold 90% monospace;
+    background: rgb(60,194,60);
+    background: linear-gradient(45deg, rgba(60,194,60,1) 0%, rgba(63,194,60,1) 68%, 
+                                        rgba(149,200,47,1) 97%, rgba(146,217,4,1) 100%);
+  }
+
+  #background-forgot-password-body{
+    background: #cbffcb;
   }
 
 </style>

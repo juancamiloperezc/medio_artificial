@@ -23,6 +23,12 @@ const routes = [
   },
 
   {
+    path: '/forgotPassword/:email/:token',
+    name: 'forgotPassword',
+    component: () => import('../views/ForgotView.vue')
+  },
+
+  {
     path: '/about',
     name: 'about',
     component: () => import('../views/AboutView.vue')

@@ -35,11 +35,12 @@ export default new Vuex.Store({
          let config = {headers: {authorization: localStorage.getItem("token")}};
 
          // en caso de que existan datos guardados se hace la petición de verificación
-         try{  
+         try{
+              let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/login/valid`  
               // se hace la petición para verificar el token
-              let res = await axios.post(`${process.env.VUE_APP_URL_API}/login/valid`, data, config);
+              let res = await axios.post(url, data, config);
               
-              console.log(res.data.data);
+              //console.log(res.data.data);
               // se actualiza la autenticación
               commit("updateInfoAuthUser", res.data.data); 
               commit("updateAuth", true);

@@ -1,15 +1,17 @@
 <template>
   <div>
-     BIENVENIDO
+     <nav-bar-dashboard>
+     </nav-bar-dashboard> 
   </div>
 </template>
 
 <script>
   import axios from 'axios' 
+  import NavBarDashboard from '@/components/NavBarDashboard.vue'
 
  export default{
     name: 'home', 
-    components: {},
+    components: {NavBarDashboard, },
 
     data: () => {
        return{

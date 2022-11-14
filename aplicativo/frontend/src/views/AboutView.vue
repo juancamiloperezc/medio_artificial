@@ -16,7 +16,10 @@
       <v-divider></v-divider>
       <v-container fluid class="ma-1 mb-1">
           <div id="div-Hor"> 
-            <div  v-for = "integrant of integrants">  
+            <div  v-for = "(integrant, index) in integrants"
+                  :key = "index" 
+                  v-bind:key="index"
+            >  
               <card-integrant :info="integrant">
               </card-integrant>  
             </div >

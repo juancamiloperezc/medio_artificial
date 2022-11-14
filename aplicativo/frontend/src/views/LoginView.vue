@@ -31,6 +31,7 @@
       </form-login-vue>
     </v-container>
 
+
  </div>
 </template> 
 
@@ -51,6 +52,7 @@ import axios from 'axios'
      return{
        isShowAlert: false, 
        colorAlert: "success",
+       urlAPI: `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/forgotPassword`
      };
    },
 
@@ -59,8 +61,10 @@ import axios from 'axios'
      async loginUser(data){ // método para realizar el inicio de sesión de un usuario
 
       try{  
+        let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/login`
+        
         // se hace la petición para  realizar el inicio de sesión
-          let res = await axios.post(`${process.env.VUE_APP_URL_API}/login`, data);
+          let res = await axios.post(url,data);
 
           this.colorAlert = "success";
           this.isShowAlert = true;

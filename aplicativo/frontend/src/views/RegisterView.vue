@@ -105,8 +105,9 @@
        // método para registrar un usuario nuevo
        async register(data){
         try{  
+          let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/register`  
         // se hace la petición para registrar los datos en el servidor
-          let res = await axios.post(`${process.env.VUE_APP_URL_API}/register`, data);
+          let res = await axios.post(url, data);
 
           if (res.data.exist){ // en caso de que el usuario ya exista
             this.colorAlert = "warning";
