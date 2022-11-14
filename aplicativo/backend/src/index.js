@@ -28,6 +28,7 @@ class Server{
       this.app.use(express.json()); // permite identificar json entrantes
       this.app.use(morgan('tiny'));
       this.app.use(express.urlencoded({extended: false}));
+      this.app.use(express.static('public'))
 
       this.app.use(cors({
         origin: "*",
