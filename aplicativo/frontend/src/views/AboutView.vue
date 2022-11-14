@@ -4,6 +4,9 @@
     <div v-if="!isAuth">
        <banner-login-vue :selected="3"></banner-login-vue>
     </div>
+    <div v-else>
+      <nav-bar-dashboard/>
+    </div>
 
     <v-container>
       <presentation></presentation>
@@ -57,13 +60,15 @@
   import BannerLoginVue from '@/components/BannerLogin.vue'
   import CardIntegrant  from '@/components/CardIntegrant.vue'
   import Presentation  from '@/components/Presentation.vue'
+  import NavBarDashboard from '@/components/NavBarDashboard.vue'
 
   export default{
     name:'about',
     components: {
       BannerLoginVue, 
       CardIntegrant,
-      Presentation
+      Presentation,
+      NavBarDashboard
     },
 
     data: () => {

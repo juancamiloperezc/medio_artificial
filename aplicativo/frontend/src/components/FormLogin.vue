@@ -42,6 +42,7 @@
                     color="green"
                     text
                     @click="dialog = false"
+                  
                   >
                     Cancelar
                   </v-btn>
@@ -117,6 +118,7 @@
               block
               v-on:keyup.enter ="validateForm"
               @click="validateForm"
+              alt = "inicio sesión"
             >
                 INICIAR SESIÓN
             </v-btn>

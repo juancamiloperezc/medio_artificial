@@ -156,7 +156,7 @@
   #background-title{
     color: white;
     text-shadow: 2px 2px 0px #000000, 5px 4px 0px rgba(0,0,0,0.15);
-    font: bold 90% monospace;
+    font: bold 90% impact;
   }
 
   .background-actions{

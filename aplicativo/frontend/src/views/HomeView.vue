@@ -1,7 +1,7 @@
 <template>
   <div>
-     <nav-bar-dashboard>
-     </nav-bar-dashboard> 
+     <nav-bar-dashboard/>
+     PRINCIPAL 
   </div>
 </template>
 

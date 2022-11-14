@@ -9,8 +9,13 @@ export default new Vuex.Store({
      infoAuthUser: {}, // estado para los datos del usuario logueado
      isAuth: false, // estado para verificar la autenticación de un usuario 
   },
+  
   getters: {
+      logedUser(state){
+         return state.infoAuthUser;
+      }
   },
+
   mutations: {
      updateInfoAuthUser(state, data){ // mutation para actualizar el estado de la información de usuario logueado
          state.infoAuthUser = data;

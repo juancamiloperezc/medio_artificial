@@ -16,7 +16,7 @@
           >
             <!--  Sección del titulo del formulario -->
             <v-app-bar dark id="background-title">
-              <v-card-title> INFORMACIÓN </v-card-title>
+              <v-card-title id = "font-title-form"> INFORMACIÓN </v-card-title>
             </v-app-bar> 
             
             <!-- sección de los campos del formulario -->
@@ -89,6 +89,7 @@
                 </v-text-field>
                 
                 <v-container class="select-width" fluid fill-height justify-center> 
+                 <v-container> 
                   <v-select 
                     outlined
                     v-model="role"
@@ -100,6 +101,7 @@
                     v-on:keyup.enter="validateForm"
                   >
                   </v-select>
+                </v-container> 
                 </v-container> 
 
                 <v-container fluid fill-height align-center justify-center> 
@@ -209,6 +211,11 @@
     color: white;
     background: linear-gradient(267deg, rgba(81,255,81,0.9962359943977591) 8%, rgba(66,194,60,1) 22%);
     transition: 0.5s ease-in-out;
+  }
+
+  #font-title-form{
+    color: white;
+    font-family: Impact;
   }
 
 </style>
