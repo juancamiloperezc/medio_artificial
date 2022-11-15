@@ -4,6 +4,7 @@ const express = require('express')
 const morgan = require('morgan')
 
 const RouterLogin = require('./Router/RoutesLogin')
+const RouterHome = require('./Router/RoutesHome')
 
 // servidor
 class Server{
@@ -38,8 +39,10 @@ class Server{
 
    setRoutes(){
       const routerLogin = new RouterLogin();
+      const routerHome = new RouterHome(); 
 
       this.app.use(routerLogin.router);
+      this.app.use(routerHome.router);
    }
 
    run(){
