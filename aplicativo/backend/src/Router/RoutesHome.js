@@ -9,7 +9,11 @@ class RouterHome{
    }
 
    init(){
-      this.router.post('/measures', this.controller.isAuth, this.controller.getMeasures);
+      this.router.post('/searchUser', this.controller.isAuth, this.controller.searchId);
+      this.router.post("/searchUserEmail", this.controller.isAuth, this.controller.searchEmail)
+      this.router.post('/addPropertie', this.controller.isAuth, this.controller.addNewPropertie);
+      this.router.post('/consultAllProperties', this.controller.isAuth, this.controller.consultAllProperties);
+      this.router.post('/consultPropertie', this.controller.isAuth, this.controller.consultPropertie);
    }
 }
 

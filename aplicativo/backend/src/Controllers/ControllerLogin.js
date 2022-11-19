@@ -74,6 +74,7 @@ class ControllerLogin{
        if (await bcryptjs.compare(req.body.password, data[0].clave)){
           // se crea el token para la sesión
           let payload = {
+            id: data[0].id,
             names: data[0].nombres, 
             lastNames: data[0].apellidos, 
             email: data[0].email,
@@ -154,6 +155,7 @@ class ControllerLogin{
          
           // se crea el payload para el token de recuperación
           let payload = {
+            id: data[0].id,
             names: data[0].nombres, 
             lastNames: data[0].apellidos, 
             email: data[0].email,

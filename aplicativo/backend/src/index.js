@@ -39,7 +39,7 @@ class Server{
 
    setRoutes(){
       const routerLogin = new RouterLogin();
-      const routerHome = new RouterHome(); 
+      const routerHome = new RouterHome();
 
       this.app.use(routerLogin.router);
       this.app.use(routerHome.router);
