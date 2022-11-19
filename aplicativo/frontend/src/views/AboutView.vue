@@ -5,7 +5,7 @@
        <banner-login-vue :selected="3"></banner-login-vue>
     </div>
     <div v-else>
-      <nav-bar-dashboard/>
+      <nav-bar-dashboard :links="linksMain"/>
     </div>
 
     <v-container>
@@ -21,7 +21,6 @@
           <div id="div-Hor"> 
             <div  v-for = "(integrant, index) in integrants"
                   :key = "index" 
-                  v-bind:key="index"
             >  
               <card-integrant :info="integrant">
               </card-integrant>  
@@ -57,10 +56,10 @@
  
  <script> 
   import { mapState } from 'vuex'
-  import BannerLoginVue from '@/components/BannerLogin.vue'
-  import CardIntegrant  from '@/components/CardIntegrant.vue'
-  import Presentation  from '@/components/Presentation.vue'
-  import NavBarDashboard from '@/components/NavBarDashboard.vue'
+  import BannerLoginVue from '@/components/ComponentsLogin/BannerLogin.vue'
+  import CardIntegrant  from '@/components/ComponentsLogin/CardIntegrant.vue'
+  import Presentation  from '@/components/ComponentsLogin/Presentation.vue'
+  import NavBarDashboard from '@/components/ComponentsDashboard/NavBarDashboard.vue'
 
   export default{
     name:'about',
@@ -94,6 +93,12 @@
             src: require("../assets/images/int_jcpc.jpg")
           }
         ],
+
+        linksMain :[
+            {icon: 'mdi-home-city', text:'Principal', route: '/'},
+            {icon: 'mdi-account-cog', text:'Configuración', route: '/settings'},
+            {icon: 'mdi-information', text:'Acerca de', route: '/about'},
+          ]
       };
     },
 

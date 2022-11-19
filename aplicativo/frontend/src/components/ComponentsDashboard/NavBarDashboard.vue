@@ -33,7 +33,6 @@
    <v-navigation-drawer id = "background-nav-drawer" v-model="drawer" dark app >
     <v-layout column align-center>
          <v-flex id = "font-info-navigation-1" class="mt-5"> 
-           <p>   
             <v-avatar size="200">
                 <img src="@/assets/images/medio_artificial_logo_2.png" alt="">
             </v-avatar>
@@ -44,13 +43,16 @@
             <p  class="white--text subheading mt-1 text-center">
                 {{rol[logedUser.rol - 1]}}
             </p>
-          </p>  
-         </v-flex>
-         <v-flex class="mt-4 mb-4">
-         </v-flex>
+           
+        </v-flex>
+        
+        <v-flex class="mt-4 mb-4">
+        </v-flex>
     </v-layout>
     <v-list flat>
-      <v-list-item id = "font-options-drawer-1" v-for="link in links" :key="link.text" router :to="link.route" active-class="border">
+      <v-list-item id = "font-options-drawer-1" v-for="link in links" 
+                   :key="link.text" router 
+                   :to="link.route" active-class="border">
           <v-list-item-action>
               <v-icon >{{link.icon}}</v-icon>
           </v-list-item-action>
@@ -69,14 +71,14 @@
    export default{
      name: 'NavBarDashboard',
      components: {},
+     
+     props: {
+         links : Array,
+     },
+
      data: () => {
        return{
           drawer: false,
-          links :[
-            {icon: 'mdi-home-city', text:'Principal', route: '/'},
-            {icon: 'mdi-account-cog', text:'Configuración', route: '/settings'},
-            {icon: 'mdi-information', text:'Acerca de', route: '/about'},
-          ],
           rol: ['Dueño', 'Ingeniero', 'Agricultor'],
           isMobile : false,
        };

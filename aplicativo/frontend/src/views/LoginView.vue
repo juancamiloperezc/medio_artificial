@@ -3,6 +3,8 @@
    <!--  banner de la sección del login --> 
    <banner-login-vue :selected="1"></banner-login-vue>
 
+   <v-progress-linear v-if="isProgress" :indeterminate="true"></v-progress-linear>
+
    <!--seccion de la alerta -->
    <v-alert
         transition="scale-transition"
@@ -31,15 +33,14 @@
       </form-login-vue>
     </v-container>
 
-
  </div>
 </template> 
 
 <script> 
 
 import axios from 'axios'
- import BannerLoginVue from '@/components/BannerLogin.vue'
- import FormLoginVue   from  '@/components/FormLogin.vue'
+ import BannerLoginVue from '@/components/ComponentsLogin/BannerLogin.vue'
+ import FormLoginVue   from  '@/components/ComponentsLogin/FormLogin.vue'
  
  export default{
    name:'login',
@@ -52,13 +53,15 @@ import axios from 'axios'
      return{
        isShowAlert: false, 
        colorAlert: "success",
-       urlAPI: `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/forgotPassword`
+       urlAPI: `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/forgotPassword`,
+       isProgress: false
      };
    },
 
    methods: {
 
      async loginUser(data){ // método para realizar el inicio de sesión de un usuario
+      this.isProgress = true;
 
       try{  
         let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/login`
@@ -73,6 +76,8 @@ import axios from 'axios'
           // se guarda el token y el email
          localStorage.setItem("email", data.email);
          localStorage.setItem("token", res.data.token);
+         
+         this.isProgress = false;
 
           // en caso de registro exitoso
           this.$router.push('/');
@@ -88,6 +93,7 @@ import axios from 'axios'
               this.colorAlert = "warning";
               this.isShowAlert = true;
               this.$refs.form.resetForm();
+              this.isProgress = false;
               return;
             }
 
@@ -95,6 +101,7 @@ import axios from 'axios'
               this.colorAlert = "warning";
               this.isShowAlert = true;
               this.$refs.form.resetForm();
+              this.isProgress = false;
               return;
             }
           }
@@ -103,6 +110,7 @@ import axios from 'axios'
            this.$refs.form.resetForm();
            this.colorAlert = "error";
            this.isShowAlert = true;
+           this.isProgress = false;
            return;
         }
        },

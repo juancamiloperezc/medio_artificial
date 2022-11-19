@@ -2,6 +2,7 @@
   <div id= "background" class="max-tamV">
     <!--  banner de la sección del login --> 
     <banner-login-vue :selected="2"></banner-login-vue>
+    <v-progress-linear v-if="isProgress" :indeterminate="true"></v-progress-linear>
 
     <!-- sección del dialogo para enviar código -->
     <v-dialog
@@ -80,8 +81,8 @@
 
 <script>
   import axios from 'axios'
-  import FormRegisterVue from '@/components/FormRegister.vue';
-  import BannerLoginVue from '@/components/BannerLogin.vue'
+  import FormRegisterVue from '@/components/ComponentsLogin/FormRegister.vue'
+  import BannerLoginVue from '@/components/ComponentsLogin/BannerLogin.vue'
 
   export default {
     name: 'register',
@@ -97,6 +98,7 @@
         colorAlert: "success",
         dialog: false, 
         codeVer: null,
+        isProgress: false
       };
     },
 
@@ -104,6 +106,8 @@
        
        // método para registrar un usuario nuevo
        async register(data){
+        this.isProgress = true;
+
         try{  
           let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/register`  
         // se hace la petición para registrar los datos en el servidor
@@ -113,12 +117,14 @@
             this.colorAlert = "warning";
             this.isShowAlert = true;
             this.$refs.form.resetForm();
+            this.isProgress = false;
             return;
           }
 
           // en caso de registro exitoso
           this.colorAlert = "success";
           this.isShowAlert = true;
+          this.isProgress = false;
 
         }catch(err){ // en caso de error
            // se muestra alerta al usuario
@@ -126,6 +132,7 @@
            this.$refs.form.resetForm();
            this.colorAlert = "error";
            this.isShowAlert = true;
+           this.isProgress = false;
            return;
         }
        },

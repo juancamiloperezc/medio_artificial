@@ -34,7 +34,7 @@
                 label = "Correo Electrónico"
                 outlined
                 required
-                
+                :rules="emailRules"
               >
               </v-text-field>
               <v-spacer></v-spacer>
@@ -68,7 +68,7 @@
           <v-img id="style-logo"  class = "mx-auto"
             min-width="200px" min-height="200px"
             max-height="250px" max-width="250px" 
-            src="../assets/images/medio_artificial_logo.png">
+            src = '@/assets/images/medio_artificial_logo.png'>
           </v-img>
         </v-container>
 
@@ -251,5 +251,4 @@
   #background-forgot-password-body{
     background: #cbffcb;
   }
-
 </style>

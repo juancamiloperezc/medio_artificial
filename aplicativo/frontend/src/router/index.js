@@ -42,10 +42,9 @@ const routes = [
   },
 
   {
-    path: '/settings',
-    name: 'settings',
-    meta: {requireAuth: true},
-    component: () => import('../views/SettingsView.vue')
+    path: '/dataPresentation/:id',
+    name: 'dataPresentation', 
+    component: () => import('../views/DataPresentation.vue')
   }
 ]
 
