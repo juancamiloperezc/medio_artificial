@@ -123,6 +123,74 @@ class ControllerHome {
          res.status(200).json({data});
       });
    }
+
+   // método para consultar los colinos de una tabla por su id
+   consultPropertieMeasureColino(req, res){
+      const modelHome = new ModelHome();
+      modelHome.consultPropertieMeasureColino(req.body.id, (err, data) =>{
+         if (err){
+            res.status(500).json({data: []})
+            return;
+         }
+
+         res.status(200).json({data})
+      })
+   }
+
+   consultMeasureColino(req, res){
+      const modelHome = new ModelHome();
+      console.log(req.body.id)
+
+      let filters = [{
+         filters:[
+            {id: req.body.id}
+         ]
+      }]
+
+      modelHome.getFilterMeasures(filters, (err, data) =>{
+         if(err){
+            res.status(500).json({data: []});
+            return;
+         }
+
+         res.status(200).json({data: data});
+
+      });
+   }
+
+   // método para añadir nuevo colino
+   addColino(req, res){
+      const modelHome = new ModelHome();  
+      const modelLogin = new ModelLogin();
+      // se configura los datos a registrar
+      let dataColino = [
+         [req.body.id, req.body.posicion, req.body.fecha_ingreso, req.body.tam_inicial, 1]
+      ];
+
+      modelHome.getPropertie(req.body.id, (err, data) => { // se revisa si la propiedad existe
+
+         if (err){
+            res.status(500).json({created: false});
+            return;
+         }
+
+         if (data.lenght == 0){
+            res.status(500).json({created: false});
+            return;
+         }
+
+         modelHome.addNewColino(dataColino, (err, data) =>{
+            if (err){
+               res.status(500).json({created:false});
+               return;
+            }
+            
+
+            res.status(200).json({created: true});
+         });
+      })   
+   }
+   
 };
 
 module.exports = ControllerHome;
