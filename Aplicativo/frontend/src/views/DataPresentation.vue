@@ -7,6 +7,7 @@
          dismissible
          :value= "isShowAlert"
          :color="colorAlert"
+         @click="isShowAlert = false"
       > 
          <div v-if = "colorAlert == 'error'" > 
                No se pudo registrar el colino
@@ -24,7 +25,7 @@
       >
         <v-card>
          <v-app-bar id = "background-head-form">
-            <v-card-title >
+            <v-card-title class ="white--text">
                <span> Añadir nuevo colino</span>
             </v-card-title>
          </v-app-bar>      
@@ -55,7 +56,7 @@
 
               <v-text-field
                 autocomplete="on"
-                prepend-icon="mdi-email"
+                prepend-icon="mdi-calendar-range"
                 v-model = "fecha_ingreso"
                 type="email"
                 label = "Fecha Ingreso"
@@ -67,7 +68,7 @@
 
               <v-text-field
                 autocomplete="on"
-                prepend-icon="mdi-email"
+                prepend-icon="mdi-arrow-split-horizontal"
                 v-model = "tam_inicial"
                 type="email"
                 label = "Tamaño inicial (cm)"
@@ -102,14 +103,14 @@
       <v-card v-if="dataComplete">
          <v-app-bar class="background-nav">
             <v-card-title> 
-              <b> FINCA </b>: {{dataProperty.dataProperty.nombre}}
+               <b> FINCA </b>: {{dataProperty.dataProperty.nombre}}
             </v-card-title>
-
+            
             <v-divider></v-divider>
-
+            
             <v-btn v-if="logedUser.rol == 3"
-               @click="dialog=true"  
-             >
+            @click="dialog=true"  
+            >
                <v-icon>mdi-sticker-plus-outline</v-icon>
             </v-btn> 
          </v-app-bar>   
@@ -134,20 +135,37 @@
             dark
             >
             {{ item.colino_activo }}
-            </v-chip>
-         </template>
-         
-         </v-data-table>
+         </v-chip>
+      </template>
 
-         <v-container fluid fill-height justify-center>
-            <v-progress-circular  v-if="isProgressData" 
+      <template v-if="logedUser.rol==3" v-slot:item.colino_activo="{ item }">
+            <v-chip
+            :color="getColorOfTableProperty(item.colino_activo)"
+            dark
+            >
+            {{ item.colino_activo }}
+         </v-chip>
+      </template>
+
+      <template  v-slot:item.retirar="{ item }">
+         <v-btn v-if="logedUser.rol==3" class="error" @click="removeHill">
+            <v-icon>
+               mdi-close-circle-outline
+            </v-icon>   
+         </v-btn>   
+      </template>
+      
+   </v-data-table>
+   
+   <v-container fluid fill-height justify-center>
+      <v-progress-circular  v-if="isProgressData" 
                indeterminate
                color="primary"
             ></v-progress-circular>
          </v-container>   
          
          <v-container>
-            <v-card class = " success mt-5 text-align-center" >
+            <v-card class = "white--text success mt-5 text-align-center" >
             <div> 
                <v-card-title> DATOS DE COLINO SELECCIONADO  </v-card-title> 
                <v-progress-linear v-if="isProgress" :indeterminate="true"></v-progress-linear>   
@@ -157,6 +175,7 @@
                   :headers="headersMeasure"
                   :items="dessertsMeasure"
                   :items-per-page="5">
+
                   
                   <template v-slot:item.medicion_temperatura="{ item }">
                      <v-chip
@@ -206,7 +225,8 @@ export default {
                   {text: 'Fecha salida', value: 'fecha_salida' },
                   {text: 'Tamaño inicial', value: 'tam_inicial' },
                   {text: 'Colino activo', value: 'colino_activo' },
-                  {text: 'Tipo retiro', value: 'tipo_retiro' }
+                  {text: 'Tipo retiro', value: 'tipo_retiro' },
+                  {text: 'retirar', value: 'retirar'}
           ],
 
           dessert: [],
@@ -282,7 +302,7 @@ export default {
          try{
             let res = await axios.post(url, {id: value.id}, config);
             let dataColinos = res.data.data;
-
+            
             dataColinos.map((obj) =>{
                let fecha_medicion = new Date(obj.fecha_medicion);
                fecha_medicion = `${fecha_medicion.getFullYear()}-${fecha_medicion.getMonth()+1}-${fecha_medicion.getDate()}`;
@@ -293,9 +313,11 @@ export default {
                      fecha_medicion: fecha_medicion,
                      hora_medicion: obj.hora_medicion,
                      medicion_temperatura: obj.medicion_temp,
-                     medicion_humedad: obj.medicion_hum
+                     medicion_humedad: obj.medicion_hum,
                });
+
             });
+
             
          }catch(err){
             console.log(err);     
@@ -333,7 +355,7 @@ export default {
       async addColino(){
          if (this.$refs.form.validate()){
             this.dialog = false;
-            console.log("valido")
+
             // se consulta los datos del colino por su id
             let url = `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/addColino`
             let config = {headers: {authorization: localStorage.getItem("token")}};
@@ -346,7 +368,6 @@ export default {
          
             try{
                let res = await axios.post(url, data, config);
-               console.log(res.data)
 
                if (res.data.created){ // si el registro es exitoso
                   this.isShowAlert = true;
@@ -363,6 +384,9 @@ export default {
                console.log(err);
             }
          }
+      },
+
+      removeHill(){
       }
    },
 
@@ -411,7 +435,8 @@ export default {
                 fecha_salida: fecha_salida,
                 tam_inicial: colino.tam_inicial,
                 colino_activo: (colino.colino_activo == 1)? "si": "no",
-                tipo_retiro: (colino.tipo_retiro == null)? " " : colino.tipo_retiro
+                tipo_retiro: (colino.tipo_retiro == null)? " " : colino.tipo_retiro,
+                retirar: ''
                })
 
          });

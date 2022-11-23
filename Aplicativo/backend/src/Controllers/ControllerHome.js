@@ -174,7 +174,7 @@ class ControllerHome {
             return;
          }
 
-         if (data.lenght == 0){
+         if (data.lenght != 0){
             res.status(500).json({created: false});
             return;
          }

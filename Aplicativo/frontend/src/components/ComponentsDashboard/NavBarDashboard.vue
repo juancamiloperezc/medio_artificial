@@ -1,6 +1,39 @@
 <template>
   <div>
-  
+
+    <v-container>
+      <v-dialog
+        v-model="dialog"
+        persistent
+        max-width="500"
+      >
+
+        <v-card>
+          <v-card-title> 
+              ¿Está seguro que desea cerrar sesión?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="red darken-1"
+              text
+              @click="dialog = false"
+            >
+              Cancelar
+            </v-btn>
+            <v-btn
+              color="green darken-1"
+              text
+              @click="logout"
+            >
+              Aceptar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-container>  
+
+    
    <!-- sección del navbar principal -->
    <v-app-bar  color="red" dark app  id = "background-nav-bar">
     <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -22,7 +55,7 @@
        </v-btn>
      </div>  
      <div v-else>
-      <v-btn text id = "font-options-drawer-1" @click = "logout">
+      <v-btn text id = "font-options-drawer-1" @click = "dialog = true">
            <span>CERRAR SESIÓN</span>
            <v-icon mdi-eye></v-icon>
       </v-btn>
@@ -81,7 +114,8 @@
           drawer: false,
           rol: ['Dueño', 'Ingeniero', 'Agricultor'],
           isMobile : false,
-       };
+          dialog: false,
+       }
      },
 
      methods:{
