@@ -16,7 +16,7 @@ As this project is in local development mode, you need a some prerrequisites.
 
 - Install nodejs (V 12.22.9 recommended)
 - Have a database manager from sql (recommended xampp)
-- Have tables like the next exmples:
+- Have tables like the next examples:
     
     -  table 'colino':  ![image](https://user-images.githubusercontent.com/87032143/203472307-2495eb14-6599-436f-a992-6146948ec146.png)
     -  table 'fincas': ![image](https://user-images.githubusercontent.com/87032143/203472374-03ee1e34-2e59-4f19-91ad-f9106125f957.png)
@@ -60,7 +60,7 @@ For installation of different sections on our project, You should use the npm pa
     
     ![image](https://user-images.githubusercontent.com/87032143/203475838-b3d5ac39-1c95-4fe4-8a5c-03047abbce28.png)
     
-    and you run the project in yout navigator:
+    and you run the project in your navigator:
     
     ![image](https://user-images.githubusercontent.com/87032143/203476303-524ab278-bb88-4692-ac4f-34be92a19aa8.png)
 
