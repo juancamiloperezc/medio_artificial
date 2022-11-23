@@ -47,6 +47,7 @@ For installation of different sections on our project, You should use the npm pa
 - in your navigator of preference you type http://yourURLfrontend:yourPortFrontend and initialize the database manager
     
     for example : 
+    
     ![image](https://user-images.githubusercontent.com/87032143/203475296-cea6e31c-8e6d-4881-bac9-55c63beec329.png)
     
     ![image](https://user-images.githubusercontent.com/87032143/203475025-bc1f7358-e2d7-4c65-bba0-5e828a136028.png)
@@ -54,6 +55,13 @@ For installation of different sections on our project, You should use the npm pa
     and get that 
                   
     ![image](https://user-images.githubusercontent.com/87032143/203475105-ab384f2a-b309-4e75-a84b-c5986f0b051b.png)
+    
+    and run the mangement database 
+    
+    ![image](https://user-images.githubusercontent.com/87032143/203475838-b3d5ac39-1c95-4fe4-8a5c-03047abbce28.png)
+    
+    and you run the project in yout navigator:
+    
+    ![image](https://user-images.githubusercontent.com/87032143/203476303-524ab278-bb88-4692-ac4f-34be92a19aa8.png)
 
-                  
-
+                
