@@ -1,33 +1,60 @@
 #include <HTTPClient.h>
 #include <WiFiManager.h>
 
+#include "DHTesp.h"
+#include "Led.h"
+
 // macros
 #define SERIAL_DEBUG // descomente esta linea si desea verificar datos en el puerto serie
-#define POT1  34
-#define POT2  35
+
+// macros para la definición de pines
+#define DHT_PIN          32  // pin para el sensor de temperatura
+#define HUMIDITY_PIN     35 // pin para el sensor de temperatura
+#define WATER_BOMB_PIN   12 // pin para la motobomba de riego
+#define VENTILATOR_PIN   13 // pin para los ventiladores
+#define PELTIER_PIN      14 // pin para la celda peltier
+
+// macros para la definición de los rangos de medicion
+
+
 
 //prototipos
 void connectWiFi();
 void taskControlCode(void *parameter);
 void taskSendDataCode(void *parameter);
 int sendDataPOST(char * body, char * url);
+uint32_t readTemperature();
 
 // variables
 const char *ssidCaptive = "medio_artificial_esp32"; // se define nombre del SSID del portal cautivo
 const char *localHost = "http://192.168.26.246:3001"; 
 
-uint16_t valPot1 = 0;
-uint16_t valPot2 = 0;
+uint16_t n_meditions = 0; // número de mediciones de los sensores para hallar el promedio
+uint32_t medTemp = 0;
+uint32_t medHum = 0;
+uint32_t averageTemp = 0; // promedio de medidas
+uint32_t averageHum = 0; // promedio de medidas de temperatura
+uint32_t cummulativeTemp = 0;
+uint32_t cumulativeHum = 0;
 
 static SemaphoreHandle_t mutex; // semaforo para la lectura de los sensores
 
 //objetos
 WiFiManager wifiManager; //objeto para el manejo del portal cautivo
+DHTesp dht;
+
+Led waterBomb(WATER_BOMB_PIN, DRAIN); // se crea objeto para control de la motobomba
+Led ventilators(VENTILATOR_PIN, DRAIN); // se cres objeto para la activación de los ventiladores
 
 void setup() {
   //borrar credenciales
   /*wifiManager.resetSetting();
   while(1);*/
+
+  // se inicializan los sensores y actuadores
+  dht.setup(DHT_PIN, DHTesp::DHT11);
+  waterBomb.init();
+  ventilators.init(); 
 
   #ifdef SERIAL_DEBUG   
    Serial.begin(115200); // se incializa el monitor serie
@@ -76,29 +103,23 @@ void taskControlCode(void *parameter){
   while(1){
     // CÓDIGO DE PRUEBA CON POTENCIOMETROS
     xSemaphoreTake(mutex, portMAX_DELAY);
-    valPot1 = analogRead(POT1) * 330 / 4095;
-    valPot2 = analogRead(POT2) * 330 / 4095;
-    
-    String val1 = String(valPot1/100) + ".";
-    (valPot1%100 < 10)? val1 += "0" + String(valPot1%100) : val1 += String(valPot1%100);
-    
-    String val2 = String(valPot2/100) + ".";
-    (valPot2%100 < 10)? val2 += "0" + String(valPot2%100) : val2 += String(valPot2%100);
+
+      // se toman las mediciones de los sensores
+      medTemp = readTemperature();
+      medHum = map(analogRead(HUMIDITY_PIN), 0, 4096, 0, 100);
+      cummulativeTemp += medTemp;
+      cumulativeHum += medHum;
+      n_meditions++; // se aumenta el número de mediciones
 
     xSemaphoreGive(mutex);
     
     #ifdef SERIAL_DEBUG 
-      Serial.print("\nnucleo: ");
-      Serial.println(xPortGetCoreID());
-      Serial.print("pot1: ");
-      Serial.println(val1.c_str());
-      Serial.print("pot2: ");
-      Serial.println(val2.c_str());
     #endif
 
     vTaskDelay(1000/portTICK_PERIOD_MS);
 
-    // TO DO LIST: acoplar la lectura y el control para los sensores a utilizar
+    // TO DO LIST: condiciones de uso de los actuadores
+
   }
 }
 
@@ -110,24 +131,35 @@ void taskSendDataCode(void *parameter){
 
     xSemaphoreTake(mutex, portMAX_DELAY);
 
-    uint16_t pos = 1;
-    
-    String val1 = String(valPot1/100) + ".";
-    (valPot1%100 < 10)? val1 += "0" + String(valPot1%100) : val1 += String(valPot1%100);
-    
-    String val2 = String(valPot2/100) + ".";
-    (valPot2%100 < 10)? val2 += "0" + String(valPot2%100) : val2 += String(valPot2%100);
+    averageTemp =  cummulativeTemp / n_meditions;
+    averageHum = cumulativeHum / n_meditions;
 
-    String bodyTemp =  "{ \"position\" : " + String(pos) + "," ;
+    uint16_t id_colino= 1;
+      
+    
+    String val1 = String(averageTemp/100) + ".";
+    (averageTemp%100 < 10)? val1 += "0" + String(averageTemp%100) : val1 += String(averageTemp%100);
+    
+    String val2 = String(averageHum/100) + ".";
+    (averageHum%100 < 10)? val2 += "0" + String(averageHum%100) : val2 += String(averageHum%100);
+
+    String bodyTemp =  "{ \"id\" : " + String(id_colino) + "," ;
     bodyTemp += " \"medition\" :" + String(val1) + "}"; 
 
-    String bodyHum =  "{ \"position\" : " + String(pos) + "," ;
+    String bodyHum =  "{ \"id\" : " + String(id_colino) + "," ;
     bodyHum += " \"medition\" :" + String(val2) + "}"; 
 
     if (WiFi.status() == WL_CONNECTED){
      sendDataPOST(bodyTemp.c_str(), "/saveTemp");
      sendDataPOST(bodyHum.c_str(), "/saveHum");
     }
+
+    // se reinician los valores
+    averageHum = 0;
+    averageTemp = 0;
+    n_meditions = 0;
+    cumulativeHum = 0;
+    cummulativeTemp = 0;
 
     xSemaphoreGive(mutex );
     
@@ -193,4 +225,17 @@ int sendDataPOST(const char * body, const char * url){
       http.end();
 
       return httpCode;
+}
+
+uint32_t readTemperature(){
+     uint32_t read = (uint32_t) dht.getTemperature();
+
+     while (isnan(read) || read > 50){
+        delay(100);
+        read = (uint32_t) dht.getTemperature();
+     }
+     
+     Serial.print(read);
+     Serial.println(" C");
+     return read;
 }

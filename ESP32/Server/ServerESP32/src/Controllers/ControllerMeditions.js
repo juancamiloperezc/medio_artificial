@@ -32,9 +32,9 @@ class ControllerMeditions{
      const model = new Model();
 
      // se obtiene el puesto del colino registrado
-     let pos = req.body.position;
+     let id = req.body.id;
      
-     model.searchForPosition(pos, (err, data) =>{
+     model.searchForId(id, (err, data) =>{
          if(err){
             console.log("error: " + err);
             res.status(404).json({exist:false, data:null});
@@ -46,22 +46,7 @@ class ControllerMeditions{
             res.status(200).json({exist: false, data: null});
             return;
          }
-
-         let id = data[0].id;
          
-         // se verifica si existe el colino y si es activo
-         model.searchForId(id, (err, data) =>{
-            if (err){
-               console.log("error: " + err);
-               res.status(500).json({exist: false, data: null});
-               return;
-            }
-
-            if (data.length == 0 || data[0].colino_activo == 0){
-               console.log("el colino no existe");
-               res.status(404).json({exist: false, data: null});
-               return;
-            } 
             
             let date = new Date();
             let currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
@@ -83,17 +68,15 @@ class ControllerMeditions{
                res.status(200).json({isOk: true}); 
             });
          });
-
-      });
   }
 
   saveNewHum(req, res){
    const model = new Model();
 
    // se obtiene el puesto del colino registrado
-   let pos = req.body.position;
+   let id = req.body.id;
    
-   model.searchForPosition(pos, (err, data) =>{
+   model.searchForId(id, (err, data) =>{
        if(err){
           console.log("error: " + err);
           res.status(404).json({exist:false, data:null});
@@ -105,23 +88,7 @@ class ControllerMeditions{
           res.status(200).json({exist: false, data: null});
           return;
        }
-
-       let id = data[0].id;
        
-       // se verifica si existe el colino y si es activo
-       model.searchForId(id, (err, data) =>{
-          if (err){
-             console.log("error: " + err);
-             res.status(500).json({exist: false, data: null});
-             return;
-          }
-
-          if (data.length == 0 || data[0].colino_activo == 0){
-             console.log("el colino no existe");
-             res.status(404).json({exist: false, data: null});
-             return;
-
-          }
           
           let date = new Date();
           let currentDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
@@ -140,13 +107,12 @@ class ControllerMeditions{
                 return;
              }
 
-             res.status(200).json({isOk: true});
+             res.status(200).json({isOk: true}); 
           });
        });
+}
 
-    });
-
-   }
+  
 }
 
 module.exports = ControllerMeditions;
