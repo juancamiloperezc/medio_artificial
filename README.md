@@ -24,5 +24,16 @@ As this project is in local development mode, you need a some prerrequisites.
     -  table 'medicion_temperaturas': ![image](https://user-images.githubusercontent.com/87032143/203472479-1af0a4f3-83e4-4cf2-a2df-5469d95c7e86.png)     
     -  table 'usuarios': ![image](https://user-images.githubusercontent.com/87032143/203472528-10e5ab37-3256-404c-84ec-48f225f8a504.png)
 
+- you design of parameter in file https://github.com/juancamiloperezc/medio_artificial/blob/juancamiloperezc-patch-1/Aplicativo/frontend/.env
+- you design of parameters in file https://github.com/juancamiloperezc/medio_artificial/tree/main/Aplicativo/backend/src/env
 
+## INSTALLATION
+For installation of different sections on our project, You should use the npm package of nodejs
+
+- you should clone this repository and go to the file https://github.com/juancamiloperezc/medio_artificial/tree/main/Aplicativo/backend in your desktop
+  open cmd or terminal of you operative system and execute the command 'npm install'
+
+- you repeat the last section but in the next file https://github.com/juancamiloperezc/medio_artificial/tree/main/Aplicativo/frontend
+
+- that firmware upload in ESP32 https://github.com/juancamiloperezc/medio_artificial/blob/main/ESP32/Client/ESP32Client/ESP32Client.ino
 
