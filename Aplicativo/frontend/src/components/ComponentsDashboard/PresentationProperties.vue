@@ -60,7 +60,7 @@
       >
         <v-card>
          <v-app-bar id = "background-head-form">
-            <v-card-title >
+            <v-card-title class="white--text">
                <span> Añadir nueva propiedad</span>
             </v-card-title>
          </v-app-bar>      
