@@ -19,6 +19,10 @@ As this project is in local development mode, you need a some prerrequisites.
 - Have tables like the next exmples:
     
     -  table 'colino':  ![image](https://user-images.githubusercontent.com/87032143/203472307-2495eb14-6599-436f-a992-6146948ec146.png)
-    
+    -  table 'fincas': ![image](https://user-images.githubusercontent.com/87032143/203472374-03ee1e34-2e59-4f19-91ad-f9106125f957.png)
+    -  table 'medicion_humedades': ![image](https://user-images.githubusercontent.com/87032143/203472433-13700cc7-2063-41b3-910c-09bbc8a11e04.png)
+    -  table 'medicion_temperaturas': ![image](https://user-images.githubusercontent.com/87032143/203472479-1af0a4f3-83e4-4cf2-a2df-5469d95c7e86.png)     
+    -  table 'usuarios': ![image](https://user-images.githubusercontent.com/87032143/203472528-10e5ab37-3256-404c-84ec-48f225f8a504.png)
+
 
 
