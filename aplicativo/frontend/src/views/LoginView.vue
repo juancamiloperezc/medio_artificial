@@ -56,10 +56,10 @@ import axios from 'axios'
        urlAPI: `${process.env.VUE_APP_URL_API}:${process.env.VUE_APP_PORT_API}/forgotPassword`,
        isProgress: false
      };
-   },
-
+    },
+    
    methods: {
-
+     
      async loginUser(data){ // método para realizar el inicio de sesión de un usuario
       this.isProgress = true;
 
@@ -87,7 +87,7 @@ import axios from 'axios'
            let status = err.response.status;
 
           if (status == 401){ 
-            let {exist, login}  = err.response.data;
+            //let {exist, login}  = err.response.data;
 
             if (!exist){ // en caso de que el usuario no exista
               this.colorAlert = "warning";

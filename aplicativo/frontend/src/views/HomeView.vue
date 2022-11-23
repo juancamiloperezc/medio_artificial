@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class= "max-height-page">
     <nav-bar-dashboard :links="linksMain"/>
     <presentation-properties />
   </div>
@@ -10,7 +10,7 @@
   import NavBarDashboard from '@/components/ComponentsDashboard/NavBarDashboard.vue'
   import PresentationProperties from '@/components/ComponentsDashboard/PresentationProperties.vue'
   
-  import { mapGetters } from 'vuex';
+  import { mapGetters} from 'vuex';
 
  export default{
     name: 'home', 
@@ -31,11 +31,16 @@
     },
     
     computed: {
-       ...mapGetters(['logedUser'])
+       ...mapGetters(['logedUser']),
+       
     }
  }
 
 </script>
 
 <style scoped>
+   .max-height-page{
+      height: 100%;
+      background: rgba(0, 0, 0, 0.328);
+   }
 </style>

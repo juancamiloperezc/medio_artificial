@@ -44,6 +44,7 @@ const routes = [
   {
     path: '/dataPresentation/:id',
     name: 'dataPresentation', 
+    meta: {requireAuth: true},
     component: () => import('../views/DataPresentation.vue')
   }
 ]
@@ -67,9 +68,18 @@ router.beforeEach(async (to, from, next) => {
     // si se requiere autenticación para la ruta pedida
     if (to.meta.requireAuth){
        if (store.state.isAuth){ // si hay autenticación valida
+          // se valida la redirección
+          if (to.name == 'dataPresentation' && !store.state.redirectValid){
+            // en caso de no ser valido el redireccionamiento
+            next("/");
+            return;
+          }
+
           next(); // se redirige a la ruta pedida
        }else if (to.name == "home"){ // si la ruta pedida es la principal
           next('/login'); // se redirige al login para iniciar sesión
+       }else if (to.name == "dataPresentation"){
+          next('/')
        }
 
        return;

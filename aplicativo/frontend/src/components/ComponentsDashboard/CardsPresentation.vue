@@ -1,6 +1,6 @@
 <template>
   <div>
-   <v-container fluid fill-height justify-center>
+   <v-container  id="background" fluid fill-height justify-center>
     <v-card
       class="mx-auto d-flex justify-start mb-6"
       :color = "info.color"
@@ -10,7 +10,7 @@
     <div id = "space-card">
       <v-spacer >
       </v-spacer>  
-    </div>  
+    </div>
 
     <v-card id = "card-style">
       <v-card-title>
@@ -27,6 +27,8 @@
        <v-btn 
           block
           @click="$emit('callback', info.id)"
+          :color="info.color"
+          dark
         >
            MAS DETALLES
        </v-btn>
@@ -55,6 +57,11 @@
 </script>
 
 <style scoped>
+
+  #background{
+    background: rgba(178, 177, 177, 0.074);
+  }
+
   #space-card{
     min-width: 5px;
     border-radius: 10px;
@@ -62,7 +69,7 @@
 
   #card-style{
       background: white;
-      font-family: Impact;
+      font-weight: bold;
       max-width: 400px; 
       width: 250px;
   }

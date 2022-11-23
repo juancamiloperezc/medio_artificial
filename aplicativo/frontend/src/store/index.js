@@ -8,13 +8,19 @@ export default new Vuex.Store({
   state: {
      infoAuthUser: {}, // estado para los datos del usuario logueado
      isAuth: false, // estado para verificar la autenticación de un usuario 
+     redirectValid: false, // estado para revisar si la redirección para los datos de los colinos es valida
   },
   
   getters: {
       logedUser(state){
          return state.infoAuthUser;
+      },
+
+      isRedirectValid(state){
+         return state.redirectValid;
       }
   },
+
 
   mutations: {
      updateInfoAuthUser(state, data){ // mutation para actualizar el estado de la información de usuario logueado
@@ -23,10 +29,15 @@ export default new Vuex.Store({
      
      updateAuth(state, status){ // mutation para actualizar el estado de autenticación del usuario
          state.isAuth = status;
+     }, 
+
+     updateRedirectValid(state, sta){
+         state.redirectValid = sta;
      }
   },
 
   actions: {
+
       async verifyAuth({commit}){
          // se verifica existencia de los datos del usuario
          if (localStorage.getItem("email") == null || localStorage.getItem("token") == null){

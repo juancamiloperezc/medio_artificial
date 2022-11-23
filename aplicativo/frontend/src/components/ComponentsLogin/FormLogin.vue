@@ -42,7 +42,8 @@
                     color="green"
                     text
                     @click="dialog = false"
-                  
+                    class=" ma-1 button-effect"
+                    
                   >
                     Cancelar
                   </v-btn>
@@ -50,6 +51,8 @@
                     color="green"
                     text
                     @click="forgotPassword"
+                    class="ma-1 button-effect"
+                    
                   >
                   Enviar Email
                 </v-btn>
@@ -241,7 +244,6 @@
  
   #background-forgot-password-head{
     color: white;
-    text-shadow: 2px 2px 0px #000000, 5px 4px 0px rgba(0,0,0,0.15);
     font: bold 90% monospace;
     background: rgb(60,194,60);
     background: linear-gradient(45deg, rgba(60,194,60,1) 0%, rgba(63,194,60,1) 68%, 
@@ -250,5 +252,16 @@
 
   #background-forgot-password-body{
     background: #cbffcb;
+  }
+
+  .button-effect{
+     color: white !important;
+     background: rgb(60,194,60);
+  }
+
+  .button-effect:hover{
+    background: white;
+    color: rgb(60,194,60) !important;
+    transition: 0.5s ease-in-out;
   }
 </style>
