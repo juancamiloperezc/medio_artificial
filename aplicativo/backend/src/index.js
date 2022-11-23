@@ -4,6 +4,7 @@ const express = require('express')
 const morgan = require('morgan')
 
 const RouterLogin = require('./Router/RoutesLogin')
+const RouterHome = require('./Router/RoutesHome')
 
 // servidor
 class Server{
@@ -28,6 +29,7 @@ class Server{
       this.app.use(express.json()); // permite identificar json entrantes
       this.app.use(morgan('tiny'));
       this.app.use(express.urlencoded({extended: false}));
+      this.app.use(express.static('public'))
 
       this.app.use(cors({
         origin: "*",
@@ -37,8 +39,10 @@ class Server{
 
    setRoutes(){
       const routerLogin = new RouterLogin();
+      const routerHome = new RouterHome();
 
       this.app.use(routerLogin.router);
+      this.app.use(routerHome.router);
    }
 
    run(){

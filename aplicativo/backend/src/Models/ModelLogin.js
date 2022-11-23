@@ -32,6 +32,20 @@ class ModelLogin{
                         VALUES ?`, [data], callback);
       connection.end();
    }
+
+   changePassword(data, callback){
+      const connection = database.connection(); 
+      connection.connect( err => {
+         if (err){
+            callback(err, null);
+            return;
+         }
+      });
+
+      // se realiza la consulta para hacer la modificación
+      connection.query(`UPDATE usuarios SET clave = '${data.pass}' WHERE email = ` + mysql.escape(data.email), callback);
+      connection.end();
+   }
 }
 
 module.exports = ModelLogin;

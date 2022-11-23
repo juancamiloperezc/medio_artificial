@@ -1,6 +1,8 @@
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 
+const template = require('../Templates/templateForgotPassHTML')
 const Model = require('../Models/ModelLogin')
 
 // clase controlador para registro e inicio de sesión
@@ -72,6 +74,7 @@ class ControllerLogin{
        if (await bcryptjs.compare(req.body.password, data[0].clave)){
           // se crea el token para la sesión
           let payload = {
+            id: data[0].id,
             names: data[0].nombres, 
             lastNames: data[0].apellidos, 
             email: data[0].email,
@@ -82,7 +85,7 @@ class ControllerLogin{
           console.log("credenciales correctas ");
 
           // se añade la sesión del token
-          jwt.sign({payload}, process.env.JWT_SECRET , {expiresIn: '3h'}, (err, token) => {
+          jwt.sign({payload}, process.env.JWT_SECRET , {expiresIn: '1d'}, (err, token) => {
               if (err){
                 console.log("no se pudo autenticar el usuario " + err);
                 res.status(500).json({exist: true, login: false});
@@ -129,10 +132,130 @@ class ControllerLogin{
       }
    }
 
-   // método para enviar código de verificación
-   sendCodeVerification(req, res) {
+   // método para enviar el email de recuperación de contraseña
+   forgotpassword(req, res){
+      const model = new Model();
+      let url = req.headers['url'];
+      let email = req.body.email;
 
+      // se busca la información del usuario al cambiar contraseña
+      model.searchEMail(email, (err, data) => {
+          if (err){
+             res.status(500).json({sendmail: false});
+             console.log("error de recuperacion: ", err);
+             return;
+          }
+          
+          // se verifica la existencia del email
+          if (data.length == 0){
+              res.status(401).json({sendmail: false});
+              console.log("el email no existe");
+              return;
+          }
+         
+          // se crea el payload para el token de recuperación
+          let payload = {
+            id: data[0].id,
+            names: data[0].nombres, 
+            lastNames: data[0].apellidos, 
+            email: data[0].email,
+            cell: data[0].celular, 
+            rol: data[0].rol
+          };
+
+          // se añade la sesión del token
+          jwt.sign({payload}, process.env.JWT_RECOVERY , {expiresIn: '5m'}, (err, token) => {
+            if (err){
+              console.log("no se pudo autenticar el usuario " + err);
+              res.status(500).json({sendMail: false});
+              return;
+            }
+
+            // se recibe el html a enviar
+            let html = templateForgotPassHTML({
+               names: data[0].nombres,
+               lastnames: data[0].apellidos,
+               link: url + `/${data[0].email}/${token}`
+            });
+            
+            try{
+               let transporter = nodemailer.createTransport({
+                  host: 'smtp.gmail.com',
+                  port: 465, 
+                  secure: true,
+                  auth: {
+                     user: `${process.env.EMAIL}`,
+                     pass: `${process.env.PASS}`
+                  }
+               });
+               
+               // se crea el mensaje y se envía
+               transporter.sendMail({
+                  from: process.env.EMAIL,
+                  to: `${email}`,
+                  subject: "recovery password",
+                  html : html
+               });
    
+               res.status(200).json({sendMail: true});
+            }catch(err){
+               res.status(500).json({sendMail:false});
+               console.log("error de email: ", err);
+            }
+            
+         });
+      });
+   }
+
+   // método para validar el token para la recuperación de la contraseña
+   async recoveryPassword(req, res){
+      let email = req.body.email;
+      let token = req.body.token;
+      let pass = await bcryptjs.hash(req.body.password, 8); 
+
+      const model = new Model();
+      
+      // se verifica la autenticidad del token
+      jwt.verify(token, process.env.JWT_RECOVERY, (err, dataUser) =>{
+         if (err){
+            res.status(500).json({valid: false});
+            console.log("error de auth : "+ err);
+            return;
+         }
+
+         // si los email no coinciden
+         if (dataUser.payload.email != email){
+            res.status(401).json({valid: false});
+            return;
+         }
+
+         // si es correcto el token se hace el query para cambiar la clave
+         model.searchEMail(email, (err, data) => {
+            if (err){
+               res.status(500).json({change: false});
+               console.log("hubo un error en el cambio ", err);
+               return;
+            }
+
+            if (data.length === 0){
+               res.status(401).json({change: false});
+               console.log("no se encontró el usuario");
+               return;
+            }
+
+            // en caso de que el email si exista
+            model.changePassword({email,pass}, (err, data) =>{
+                  if (err){
+                     res.status(500).json({change: false});
+                     console.log("no se hizo la consulta: ", err);
+                     return;
+                  }
+
+                  res.status(201).json({change: true});
+                  console.log("se cambio la password");
+            });
+         });
+      });
    }
 }
 

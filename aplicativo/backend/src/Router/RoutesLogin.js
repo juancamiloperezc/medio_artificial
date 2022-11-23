@@ -10,10 +10,11 @@ class RouterLogin{
      this.init();
   }
 
-  init(){
-    
+  init(){ 
     this.router.post('/register', this.controller.register);
     this.router.post('/login', this.controller.login);
+    this.router.post('/forgotPassword', this.controller.forgotpassword)
+    this.router.put('/recoveryPassword', this.controller.recoveryPassword)
     this.router.post('/login/valid', this.controller.isAuth);
   }
 }
